@@ -23,20 +23,20 @@ jobs:
 
       - name: Install PHP dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-        working-directory: .
+        
   
       - name: Install Node.js dependencies
         run: npm ci
-        working-directory: .
+        
         
       - name: Build assets with Vite
         run: npm run build
-        working-directory: .
+        
        
 
       - name: Copy .env
         run: cp .env.example .env
-        working-directory: .
+        
        
 
       - name: Generate application key
