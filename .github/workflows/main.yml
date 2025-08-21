@@ -1,0 +1,38 @@
+name: Laravel CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Jalankan Unit Test
+        run: php artisan test
+
+      - name: Deploy ke Server (Opsional)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploy ke server production..."
+          # di sini biasanya pakai rsync/ftp/ssh untuk upload ke hosting
