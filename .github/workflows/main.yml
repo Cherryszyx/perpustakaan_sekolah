@@ -34,7 +34,7 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Build assets with Vite
+      - name: Build assets
         run: npm run build
 
       - name: Run migrations
