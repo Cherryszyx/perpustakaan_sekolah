@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:   # ✅ ini supaya bisa manual run
+  workflow_dispatch:
 
 jobs:
   laravel-tests:
@@ -21,8 +21,19 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, bcmath, intl, sqlite
 
-      - name: Install dependencies
+      - name: Install PHP dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Build assets with Vite
+        run: npm run build
 
       - name: Copy .env
         run: cp .env.example .env
