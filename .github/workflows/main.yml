@@ -40,6 +40,15 @@ jobs:
 
       - name: Build assets
         run: npm run build
+        
+      - name: Debug build output
+        run: |
+          echo "===== LIST public/build ====="
+          ls -lah public/build || echo "❌ Build folder not found!"
+          echo "===== LIST public/build/.vite ====="
+          ls -lah public/build/.vite || true
+          echo "===== MANIFEST ====="
+          cat public/build/manifest.json || echo "❌ manifest.json not found!"
 
       - name: Ensure manifest exists
         run: |
