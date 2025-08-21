@@ -23,19 +23,28 @@ jobs:
 
       - name: Install PHP dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-        
-  
+
       - name: Copy .env
         run: cp .env.example .env
 
       - name: Generate application key
         run: php artisan key:generate
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
       - name: Install Node.js dependencies
         run: npm ci
 
       - name: Build assets
         run: npm run build
+
+      - name: Ensure manifest exists
+        run: |
+          ls -lah public/build || echo "❌ Build folder not found!"
+          test -f public/build/manifest.json || (echo "❌ manifest.json not found!" && exit 1)
 
       - name: Run migrations
         run: php artisan migrate --force
